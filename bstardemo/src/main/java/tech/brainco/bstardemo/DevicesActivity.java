@@ -15,9 +15,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import tech.brainco.bstarblesdk.core.BstarDevice;
 import tech.brainco.bstarblesdk.core.BstarSDK;
+import tech.brainco.bstarblesdk.core.Callback;
+import tech.brainco.bstarblesdk.core.Result;
 import tech.brainco.bstardemo.databinding.ActivityConnectedDevicesBinding;
 import tech.brainco.bstardemo.databinding.ItemDevicesBinding;
 import timber.log.Timber;
@@ -35,6 +39,17 @@ public class DevicesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BstarSDK.scanDevices(new Result<List<String>>() {
+            @Override
+            public void onResult(List<String> strings) {
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable throwable) {
+
+            }
+        });
         ActivityConnectedDevicesBinding binding = ActivityConnectedDevicesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         Timber.i("onCreate");
@@ -85,7 +100,6 @@ public class DevicesActivity extends AppCompatActivity {
                     }
                 });
             }
-
             @SuppressLint("SetTextI18n")
             private void setText(ItemDevicesBinding binding, BstarDevice device) {
                 binding.tvConnect.setText("connected " + device.getConnected());
